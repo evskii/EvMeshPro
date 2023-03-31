@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac6cf4b47b6a3b34fa2fc25f7d908a24, type: 3}
+  m_Name: ExampleTextStyleList
+  m_EditorClassIdentifier: 
+  customTextStyles:
+  - tagID: TEST
+    overrideColor: 1
+    textColor: {r: 0.12967247, g: 0.83430296, b: 0.8867924, a: 1}
+    overrideFontSize: 0
+    fontSize: 0
+    isBold: 1
+    isItalic: 0
+    isAllCaps: 1
+    isHighlighted: 1
+    highLightColor: {r: 0.23161788, g: 0.8980392, b: 0.17254902, a: 1}

@@ -200,7 +200,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -239,9 +239,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueBoxPrefab: {fileID: 6938210103049046939, guid: 06a066884e769224ea511ffdade209a5, type: 3}
   dialogueBoxParent: {fileID: 1984298256}
-  wpmReadingSpeed: 238
+  wpmReadingSpeed: 100
   textTypeSpeed: 0.02
   characterList: {fileID: 11400000, guid: e50a748e793113849ba3e50c33d8925b, type: 2}
+  textStyleList: {fileID: 11400000, guid: 8adebc72f9f6a604dbfb0a8fc89f141b, type: 2}
   lerpDialogueBoxesIn: 1
   onlyLerpFirstBoxInQue: 0
 --- !u!1 &519420028

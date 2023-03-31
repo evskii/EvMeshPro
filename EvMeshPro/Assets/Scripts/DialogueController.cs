@@ -1,6 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Text.RegularExpressions;
+
+using UnityEditor.Profiling.Memory.Experimental;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +27,7 @@ public class DialogueController : MonoBehaviour
     [SerializeField][Tooltip("This dictates how long dialogue boxes stay on screen. Lower/Higher to make them last longer/shorter")] private int wpmReadingSpeed;
     [SerializeField] [Tooltip("Dictates how fast text appears in the box. Use 0 if you wish for it to appear immediately.")] private float textTypeSpeed = 0.1f;
     [SerializeField] private SO_CharacterList characterList;
+    [SerializeField] private SO_TextStyleList textStyleList;
     
     [Header("Textbox Lerp Settings")]
     [SerializeField][Tooltip("Lerp the texbox into place once it is called. This can be configured on the TextBox prefabs UiLerpElement component.")] 
@@ -38,7 +44,7 @@ public class DialogueController : MonoBehaviour
     //Base method that only utilizes dialogue
     public void NewDialogueInstance(string dialogue) {
         GameObject newDialogueBox = Instantiate(dialogueBoxPrefab, dialogueBoxParent);
-        newDialogueBox.GetComponent<Textbox>().InitializeTextbox(dialogue);
+        newDialogueBox.GetComponent<Textbox>().InitializeTextbox(ParseDialogueCustomStyle(dialogue));
         newDialogueBox.SetActive(false);
         
         dialogueInstanceQue.Add(newDialogueBox);
@@ -114,6 +120,84 @@ public class DialogueController : MonoBehaviour
             queIterationCoroutine = StartCoroutine(IterateQue());
         } else {
             queIterationCoroutine = null;
+        }
+    }
+    
+    //---------------------------------------------- Parsing Text For Custom Styles -----------------------------------------------------------------
+
+    [ContextMenu("Test Parse")]
+    public void TestParse() {
+        Debug.Log(ParseDialogueCustomStyle("This is a test to find [TEST] and [/TEST] see [WHEENENNEN] how many times we can find it.[/WHEENENNEN]"));
+    }
+
+    public string ParseDialogueCustomStyle(string toParse) {
+        string rawString = toParse;
+        if (rawString.Contains("[")) {
+            string pattern = @"\[[A-Za-z]+\]"; //Regex pattern to find '[WORDSINHERE]' 
+            string richtextString = toParse;
+
+            foreach (Match match in Regex.Matches(rawString, pattern)) {
+                //Get the starting tag index in our raw string
+                string matchedTag = match.ToString();
+                int tagStartIndex = rawString.IndexOf(matchedTag);
+                int stringStartIndex = tagStartIndex + matchedTag.Length;
+                
+                //Get our ending tag index in our raw string
+                string closeTag = matchedTag.Insert(1, @"/");
+                int tagEndIndex = rawString.IndexOf(closeTag) + closeTag.Length;
+                int stringEndIndex = tagEndIndex - closeTag.Length;
+
+                string taggedString = rawString.Substring(tagStartIndex, tagEndIndex - tagStartIndex);
+                string taglessString = rawString.Substring(stringStartIndex, stringEndIndex - stringStartIndex);
+                // Debug.Log(taglessString); //String with the tags removed
+
+                //Retrieve the textStyle class relative to this chunk of text
+                CustomTextStyle textStyle = textStyleList.GetTextStyle(matchedTag.Replace("[", "").Replace("]", ""));
+                if (textStyle == null) {
+                    Debug.Log("<color=cyan>Could not find the custom text style [" + matchedTag + "] in your text: "+ rawString +"</color>");
+                    return rawString;
+                }
+                
+                //Apply RichText tags here!!!!!!!!!!!! 
+                if (textStyle.isAllCaps) {
+                    taglessString = "<allcaps>" + taglessString + "</allcaps>";
+                }
+
+                if (textStyle.isBold) {
+                    taglessString = "<b>" + taglessString + "</b>";
+                }
+                
+                if (textStyle.isItalic) {
+                    taglessString = "<i>" + taglessString + "</i>";
+                }
+
+                if (textStyle.overrideColor) {
+                    string colourHex = ColorUtility.ToHtmlStringRGB(textStyle.textColor);
+                    taglessString = "<color=#" + colourHex + ">" + taglessString + "</color>";
+                }
+
+                if (textStyle.isHighlighted) {
+                    string colourHex = ColorUtility.ToHtmlStringRGB(textStyle.highLightColor);
+                    taglessString = "<mark=#" + colourHex + "aa>" + taglessString + "</mark>";
+                }
+                
+
+                rawString = rawString.Replace(taggedString, taglessString);
+            }
+            
+
+            // string startTag = "[" + customTextStyle.tagID + "]";
+            
+            // int tagStartIndex = rawString.IndexOf("[" + customTextStyle.tagID + "]");
+            // int tagEndIndex = rawString.IndexOf("[/" + customTextStyle.tagID + "]") + ("[/" + customTextStyle.tagID + "]").Length;
+
+            // return rawString.Substring(tagStartIndex, tagEndIndex - tagStartIndex);
+            // return "Tag Start: " + tagStartIndex + " Tag End: " + tagEndIndex;
+
+            Debug.Log(rawString);
+            return rawString;
+        } else {
+            return rawString;
         }
     }
 
