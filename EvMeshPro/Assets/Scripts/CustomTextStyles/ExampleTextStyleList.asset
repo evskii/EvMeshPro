@@ -12,14 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac6cf4b47b6a3b34fa2fc25f7d908a24, type: 3}
   m_Name: ExampleTextStyleList
   m_EditorClassIdentifier: 
+  previewSampleText: This is the sample text used when you are testing our your custom
+    style in scene view!
   customTextStyles:
   - tagID: TEST
-    overrideColor: 1
-    textColor: {r: 0.12967247, g: 0.83430296, b: 0.8867924, a: 1}
+    overrideColor: 0
+    textColor: {r: 0.8773585, g: 0.5752492, b: 0.60030895, a: 1}
     overrideFontSize: 0
-    fontSize: 0
+    sizeChangeAsPercent: 0
+    fontSize: 100
+    overrideCharacterSpacing: 0
+    spacingSize: 0.6
+    isBold: 0
+    isItalic: 0
+    isAllCaps: 0
+    isStrikeThrough: 0
+    isUnderLine: 0
+    isHighlighted: 0
+    highLightColor: {r: 0.23161788, g: 0.8980392, b: 0.17254902, a: 1}
+  - tagID: NAMES
+    overrideColor: 1
+    textColor: {r: 0.9137255, g: 0.17082456, b: 0.1254902, a: 1}
+    overrideFontSize: 0
+    sizeChangeAsPercent: 0
+    fontSize: 40
+    overrideCharacterSpacing: 0
+    spacingSize: 50
     isBold: 1
     isItalic: 0
-    isAllCaps: 1
-    isHighlighted: 1
-    highLightColor: {r: 0.23161788, g: 0.8980392, b: 0.17254902, a: 1}
+    isAllCaps: 0
+    isStrikeThrough: 0
+    isUnderLine: 0
+    isHighlighted: 0
+    highLightColor: {r: 0.8980392, g: 0.6714969, b: 0.17254902, a: 1}

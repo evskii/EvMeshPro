@@ -4,10 +4,15 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text.RegularExpressions;
 
+using Unity.VisualScripting;
+
 using UnityEditor.Profiling.Memory.Experimental;
 
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+
+using ColorUtility = UnityEngine.ColorUtility;
 
 public class DialogueController : MonoBehaviour
 {
@@ -26,8 +31,8 @@ public class DialogueController : MonoBehaviour
     [Header("Dialogue Settings")]
     [SerializeField][Tooltip("This dictates how long dialogue boxes stay on screen. Lower/Higher to make them last longer/shorter")] private int wpmReadingSpeed;
     [SerializeField] [Tooltip("Dictates how fast text appears in the box. Use 0 if you wish for it to appear immediately.")] private float textTypeSpeed = 0.1f;
-    [SerializeField] private SO_CharacterList characterList;
-    [SerializeField] private SO_TextStyleList textStyleList;
+    public SO_CharacterList characterList;
+    public SO_TextStyleList textStyleList;
     
     [Header("Textbox Lerp Settings")]
     [SerializeField][Tooltip("Lerp the texbox into place once it is called. This can be configured on the TextBox prefabs UiLerpElement component.")] 
@@ -40,6 +45,8 @@ public class DialogueController : MonoBehaviour
     private List<GameObject> dialogueInstanceQue = new List<GameObject>();
     private Coroutine queIterationCoroutine;
     private bool firstQueIndex = false; //Lets us know if this is the first textbox in the current que (IMPROVE THIS PLEASE)
+
+    public List<String> rawDialogue = new List<string>();
     
     //Base method that only utilizes dialogue
     public void NewDialogueInstance(string dialogue) {
@@ -133,6 +140,10 @@ public class DialogueController : MonoBehaviour
     public string ParseDialogueCustomStyle(string toParse) {
         string rawString = toParse;
         if (rawString.Contains("[")) {
+            if (textStyleList == null) {
+                Debug.Log("<color=cyan>Custom style tag detected in string, however DialogueController does not have a StyleSheetList referenced!</color>");
+                return rawString;
+            }
             string pattern = @"\[[A-Za-z]+\]"; //Regex pattern to find '[WORDSINHERE]' 
             string richtextString = toParse;
 
@@ -162,6 +173,14 @@ public class DialogueController : MonoBehaviour
                 if (textStyle.isAllCaps) {
                     taglessString = "<allcaps>" + taglessString + "</allcaps>";
                 }
+                
+                if (textStyle.isStrikeThrough) {
+                    taglessString = "<s>" + taglessString + "</s>";
+                }
+
+                if (textStyle.isUnderLine) {
+                    taglessString = "<u>" + taglessString + "</u>";
+                }
 
                 if (textStyle.isBold) {
                     taglessString = "<b>" + taglessString + "</b>";
@@ -180,6 +199,16 @@ public class DialogueController : MonoBehaviour
                     string colourHex = ColorUtility.ToHtmlStringRGB(textStyle.highLightColor);
                     taglessString = "<mark=#" + colourHex + "aa>" + taglessString + "</mark>";
                 }
+
+                if (textStyle.overrideFontSize) {
+                    string sizeValue = textStyle.sizeChangeAsPercent ? textStyle.fontSize + "%" : textStyle.fontSize.ToString();
+                    taglessString = "<size=" + sizeValue + ">" + taglessString + "</size>";
+                }
+
+                if (textStyle.overrideCharacterSpacing) {
+                    taglessString = "<cspace=" + textStyle.spacingSize + ">" + taglessString + "</cspace>";
+                }
+
                 
 
                 rawString = rawString.Replace(taggedString, taglessString);
@@ -194,7 +223,8 @@ public class DialogueController : MonoBehaviour
             // return rawString.Substring(tagStartIndex, tagEndIndex - tagStartIndex);
             // return "Tag Start: " + tagStartIndex + " Tag End: " + tagEndIndex;
 
-            Debug.Log(rawString);
+            // Debug.Log(rawString);
+            rawDialogue.Add(rawString);
             return rawString;
         } else {
             return rawString;

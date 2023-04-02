@@ -6,6 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewTextStyleList", menuName = "EvMeshPro/New Text Style List", order = 2)]
 public class SO_TextStyleList : ScriptableObject
 {
+	[TextArea]public string previewSampleText = "This is the sample text used when you are testing our your custom style in scene view!";
+
 	public List<CustomTextStyle> customTextStyles = new List<CustomTextStyle>();
 	
 	public CustomTextStyle GetTextStyle(string textTagID) {
@@ -34,11 +36,16 @@ public class CustomTextStyle
 
 	[Header("Text Style")]
 	public bool overrideFontSize = false;
-	public float fontSize;
+	public bool sizeChangeAsPercent = false;
+	[Range(0, 100)] public float fontSize = 50;
+	public bool overrideCharacterSpacing = false;
+	[Range(0, 50)] public float spacingSize = 25;
 	[Space]
 	public bool isBold = false;
 	public bool isItalic = false;
 	public bool isAllCaps = false;
+	public bool isStrikeThrough = false;
+	public bool isUnderLine = false;
 	[Space]
 	public bool isHighlighted = false;
 	public Color highLightColor;
