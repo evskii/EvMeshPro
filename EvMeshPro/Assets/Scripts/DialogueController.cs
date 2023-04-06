@@ -33,7 +33,7 @@ public class DialogueController : MonoBehaviour
     [SerializeField] [Tooltip("Dictates how fast text appears in the box. Use 0 if you wish for it to appear immediately.")] private float textTypeSpeed = 0.1f;
     public SO_CharacterList characterList;
     public SO_TextStyleList textStyleList;
-    
+
     [Header("Textbox Lerp Settings")]
     [SerializeField][Tooltip("Lerp the texbox into place once it is called. This can be configured on the TextBox prefabs UiLerpElement component.")] 
     private bool lerpDialogueBoxesIn = false;
@@ -46,8 +46,6 @@ public class DialogueController : MonoBehaviour
     private Coroutine queIterationCoroutine;
     private bool firstQueIndex = false; //Lets us know if this is the first textbox in the current que (IMPROVE THIS PLEASE)
 
-    public List<String> rawDialogue = new List<string>();
-    
     //Base method that only utilizes dialogue
     public void NewDialogueInstance(string dialogue) {
         GameObject newDialogueBox = Instantiate(dialogueBoxPrefab, dialogueBoxParent);
@@ -174,6 +172,10 @@ public class DialogueController : MonoBehaviour
                     taglessString = "<allcaps>" + taglessString + "</allcaps>";
                 }
                 
+                if (textStyle.overrideCharacterSpacing) {
+                    taglessString = "<cspace=" + textStyle.spacingSize + ">" + taglessString + "</cspace>";
+                }
+                
                 if (textStyle.isStrikeThrough) {
                     taglessString = "<s>" + taglessString + "</s>";
                 }
@@ -205,26 +207,13 @@ public class DialogueController : MonoBehaviour
                     taglessString = "<size=" + sizeValue + ">" + taglessString + "</size>";
                 }
 
-                if (textStyle.overrideCharacterSpacing) {
-                    taglessString = "<cspace=" + textStyle.spacingSize + ">" + taglessString + "</cspace>";
-                }
+                
 
                 
 
                 rawString = rawString.Replace(taggedString, taglessString);
             }
             
-
-            // string startTag = "[" + customTextStyle.tagID + "]";
-            
-            // int tagStartIndex = rawString.IndexOf("[" + customTextStyle.tagID + "]");
-            // int tagEndIndex = rawString.IndexOf("[/" + customTextStyle.tagID + "]") + ("[/" + customTextStyle.tagID + "]").Length;
-
-            // return rawString.Substring(tagStartIndex, tagEndIndex - tagStartIndex);
-            // return "Tag Start: " + tagStartIndex + " Tag End: " + tagEndIndex;
-
-            // Debug.Log(rawString);
-            rawDialogue.Add(rawString);
             return rawString;
         } else {
             return rawString;

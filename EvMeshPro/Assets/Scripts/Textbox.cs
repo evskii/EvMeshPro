@@ -8,8 +8,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Random = UnityEngine.Random;
+
 public class Textbox : MonoBehaviour
 {
+    [Header("Textbox Settings")]
+    [SerializeField] private bool usesCharacterInfo;
+    
+    [Header("Textbox References")]
     //Text
     [SerializeField] private TMP_Text dialogueText;
     [HideInInspector] public string dialogue;
@@ -23,29 +29,68 @@ public class Textbox : MonoBehaviour
     [SerializeField] private Image characterSpriteImage; 
     
     private CharacterProfile myCharater;
-    
+
+    [Header("Audio Settings")]
+    [SerializeField][Tooltip("Audio blips are AudioClips that play as each letter is typed out in the dialogue box.")] private bool useAudioBlips;
+    [SerializeField][Tooltip("This will be used as the default audio clip if not specified by character profile.")] private AudioClip[] defaultClips;
+    private AudioSource audioSource;
+
+
     public void InitializeTextbox(string dialogue) {
+        audioSource = GetComponent<AudioSource>();
         this.dialogue = dialogue;
 
-        nameText.text = "";
-        nameTextImage.enabled = false;
-        
-        characterSpriteBackground.gameObject.SetActive(false);
+        if (nameText != null) {
+            nameText.text = "";
+        }
+        if (nameTextImage != null) {
+            nameTextImage.enabled = false;
+        }
+        if (characterSpriteBackground != null) {
+            characterSpriteBackground.gameObject.SetActive(false);
+        }
     }
 
     public void InitializeTextbox(string dialogue, CharacterProfile myCharacter) {
+        audioSource = GetComponent<AudioSource>();
         this.myCharater = myCharacter;
         
         this.dialogue = dialogue;
 
-        nameText.text = this.myCharater.characterName;
-        nameTextImage.enabled = true;
-        nameTextImage.color = this.myCharater.characterColor;
+        if (usesCharacterInfo) {
+            if (nameText != null) {
+                nameText.text = this.myCharater.characterName;
+            }
 
-        characterSpriteBackground.gameObject.SetActive(true);
-        characterSpriteBackground.color = this.myCharater.characterColor;
+            if (nameTextImage != null) {
+                nameTextImage.enabled = true;
+                nameTextImage.color = this.myCharater.characterColor;
+            }
 
-        characterSpriteImage.sprite = this.myCharater.characterSprite;
+            if (characterSpriteBackground != null) {
+                characterSpriteBackground.gameObject.SetActive(true);
+                characterSpriteBackground.color = this.myCharater.characterColor;
+            }
+
+            if (characterSpriteImage != null) {
+                characterSpriteImage.sprite = this.myCharater.characterSprite;
+            }
+
+        } else {
+            //Check null here for each component. If user is not using character info and has removed references then we will get a null
+            //ref error otherwise.
+            if (nameText != null) {
+                nameText.text = "";
+            }
+            if (nameTextImage != null) {
+                nameTextImage.enabled = false;
+            }
+            if (characterSpriteBackground != null) {
+                characterSpriteBackground.gameObject.SetActive(false);
+            }
+        }
+        
+        
     }
 
     public void DisplayText() {
@@ -54,7 +99,13 @@ public class Textbox : MonoBehaviour
 
     public void DisplayText(float typeSpeed) {
         dialogueText.text = "";
-        StartCoroutine(OneLetterAtAtime(typeSpeed));
+
+        if (typeSpeed == 0) {
+            dialogueText.text = dialogue;
+        } else {
+            StartCoroutine(OneLetterAtAtime(typeSpeed));
+        }
+        
     }
 
     private IEnumerator OneLetterAtAtime(float typeSpeed) {
@@ -127,6 +178,22 @@ public class Textbox : MonoBehaviour
             workingIndex++;
 
             dialogueText.text = displayText;
+
+
+            if (useAudioBlips) {
+                if (myCharater != null) {
+                    if (myCharater.speechSFXBlips.Length > 0) {
+                        audioSource.clip = myCharater.speechSFXBlips[Random.Range(0, myCharater.speechSFXBlips.Length)];
+                    } else {
+                        audioSource.clip = defaultClips[Random.Range(0, defaultClips.Length)];
+                    }
+                } else {
+                    audioSource.clip = defaultClips[Random.Range(0, defaultClips.Length)];
+                }
+
+                audioSource.Play();
+            }
+            
             
             yield return new WaitForSeconds(typeSpeed);
         }

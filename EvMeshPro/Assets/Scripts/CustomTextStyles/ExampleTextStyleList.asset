@@ -12,26 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac6cf4b47b6a3b34fa2fc25f7d908a24, type: 3}
   m_Name: ExampleTextStyleList
   m_EditorClassIdentifier: 
-  previewSampleText: I just want to test these things out to see if they work!
+  previewSampleText: FIGHT
   customTextStyles:
-  - tagID: TEST
+  - tagID: GREEN
     overrideColor: 1
-    textColor: {r: 0.9339623, g: 0.101326115, b: 0.16620669, a: 1}
+    textColor: {r: 0.10196078, g: 0.93333334, b: 0.34619594, a: 1}
     overrideFontSize: 1
     sizeChangeAsPercent: 1
-    fontSize: 57.6
-    overrideCharacterSpacing: 1
+    fontSize: 100
+    overrideCharacterSpacing: 0
     spacingSize: 3.3
-    isBold: 1
+    isBold: 0
     isItalic: 1
-    isAllCaps: 0
+    isAllCaps: 1
     isStrikeThrough: 0
     isUnderLine: 0
     isHighlighted: 0
     highLightColor: {r: 0.23161788, g: 0.8980392, b: 0.17254902, a: 1}
   - tagID: NAMES
     overrideColor: 1
-    textColor: {r: 0.87235385, g: 0.9137255, b: 0.1254902, a: 1}
+    textColor: {r: 0.1254902, g: 0.42596555, b: 0.9137255, a: 1}
     overrideFontSize: 0
     sizeChangeAsPercent: 0
     fontSize: 40
@@ -39,7 +39,22 @@ MonoBehaviour:
     spacingSize: 50
     isBold: 1
     isItalic: 0
-    isAllCaps: 0
+    isAllCaps: 1
+    isStrikeThrough: 0
+    isUnderLine: 0
+    isHighlighted: 0
+    highLightColor: {r: 0.8980392, g: 0.6714969, b: 0.17254902, a: 1}
+  - tagID: EXAGGERATE
+    overrideColor: 1
+    textColor: {r: 0.9137255, g: 0.27777937, b: 0.1254902, a: 1}
+    overrideFontSize: 1
+    sizeChangeAsPercent: 1
+    fontSize: 110
+    overrideCharacterSpacing: 1
+    spacingSize: 10
+    isBold: 1
+    isItalic: 0
+    isAllCaps: 1
     isStrikeThrough: 0
     isUnderLine: 0
     isHighlighted: 0

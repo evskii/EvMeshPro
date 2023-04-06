@@ -37,7 +37,7 @@ public class CustomTextStyle
 	[Header("Text Style")]
 	public bool overrideFontSize = false;
 	public bool sizeChangeAsPercent = false;
-	[Range(0, 100)] public float fontSize = 50;
+	[Range(0, 200)] public float fontSize = 50;
 	public bool overrideCharacterSpacing = false;
 	[Range(0, 50)] public float spacingSize = 25;
 	[Space]

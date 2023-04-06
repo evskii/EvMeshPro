@@ -30,4 +30,5 @@ public class CharacterProfile
 	[TextArea] public string characterDescription;
 	public Color characterColor;
 	public Sprite characterSprite;
+	public AudioClip[] speechSFXBlips;
 }
