@@ -487,6 +487,7 @@ GameObject:
   - component: {fileID: 7066226958163096548}
   - component: {fileID: 267251806}
   - component: {fileID: 6432257145120746972}
+  - component: {fileID: 7963773636652661150}
   m_Layer: 5
   m_Name: Textbox_Soft
   m_TagString: Untagged
@@ -528,7 +529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b054908f3f8aad4baa88b6e25e2071a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useseCharacterInfo: 1
+  usesCharacterInfo: 0
   dialogueText: {fileID: 6938210102943672971}
   dialogue: 
   nameText: {fileID: 6938210103144323920}
@@ -537,6 +538,7 @@ MonoBehaviour:
   characterSpriteImage: {fileID: 568701539971837463}
   useAudioBlips: 0
   defaultClips: []
+  textAnimations: {fileID: 7963773636652661150}
 --- !u!114 &267251806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,6 +651,63 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7963773636652661150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6938210103049046939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83f25c5c70019594aa1337ff05c9737a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMesh: {fileID: 6938210102943672971}
+  useBounceEffect: 1
+  bounceScale: 2
+  bounceFrequency: 10
+  useScaleEffect: 0
+  scaleRate: 0
+  scaleMax: 0
+  scaleMin: 0
+  useRainbowEffect: 1
+  rainbowWidth: 0.001
+  rainbowDirection: 0
+  rainbow:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0.4796099, b: 0, a: 1}
+    key2: {r: 0.9920671, g: 1, b: 0, a: 0}
+    key3: {r: 0.042809248, g: 1, b: 0, a: 0}
+    key4: {r: 0, g: 0.8998492, b: 1, a: 0}
+    key5: {r: 0.2991004, g: 0, b: 1, a: 0}
+    key6: {r: 1, g: 0, b: 0.8938141, a: 0}
+    key7: {r: 1, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 8288
+    ctime2: 17348
+    ctime3: 26792
+    ctime4: 38165
+    ctime5: 48188
+    ctime6: 58982
+    ctime7: 65535
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 8
+    m_NumAlphaKeys: 2
+  useRotateEffect: 0
+  pingPongRotation: 0
+  rotateAngle: 0
+  rotateFrequency: 0
+  rotationAxis: {x: 0, y: 0, z: 0}
 --- !u!1 &6938210103144323934
 GameObject:
   m_ObjectHideFlags: 0

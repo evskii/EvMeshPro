@@ -49,4 +49,7 @@ public class CustomTextStyle
 	[Space]
 	public bool isHighlighted = false;
 	public Color highLightColor;
+	[Space]
+	public bool useTextAnimations;
+	public bool useRainbowEffect;
 }

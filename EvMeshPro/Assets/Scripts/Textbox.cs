@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using TMPro;
+
+using Unity.VisualScripting;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,6 +37,9 @@ public class Textbox : MonoBehaviour
     [SerializeField][Tooltip("Audio blips are AudioClips that play as each letter is typed out in the dialogue box.")] private bool useAudioBlips;
     [SerializeField][Tooltip("This will be used as the default audio clip if not specified by character profile.")] private AudioClip[] defaultClips;
     private AudioSource audioSource;
+
+    [Header("Text Animation Settings")]
+    [SerializeField] private TextAnimations textAnimations;
 
 
     public void InitializeTextbox(string dialogue) {
@@ -118,24 +124,62 @@ public class Textbox : MonoBehaviour
 
         //Get our substrings that are styled
         List<StyleTextChunk> styleTextChunks = new List<StyleTextChunk>();
+        int indexOffset = 0; //This is used to compensate for loss of data when removing <animate> tags
         var regexMatches = Regex.Matches(dialogue, styleTextPattern);
         for (int i = 0; i < regexMatches.Count; i++) {
+
             StyleTextChunk styleChunk = new StyleTextChunk();
 
             styleChunk.styledText = regexMatches[i].ToString().Replace(">", "").Replace("</", "");
             styleChunk.openTagString = Regex.Matches(dialogue, openTagPattern)[i].ToString();
             styleChunk.closeTagString = Regex.Matches(dialogue, closeTagPattern)[i].ToString();
-            styleChunk.styledTextStartIndex = regexMatches[i].Index - styleChunk.openTagString.Length + 1;
 
+            //If we find animate tags in the chunk, then we need to store it and remove from open/close tags
+            if (styleChunk.openTagString.Contains("<animate")) {
+                int animateTagStartIndex = styleChunk.openTagString.IndexOf("<animate");
+                int animateTagEndIndex = 0;
+                for (int x = animateTagStartIndex; x < styleChunk.openTagString.Length; x++) {
+                    if (styleChunk.openTagString[x] == '>') {
+                        animateTagEndIndex = x;
+                        break;
+                    }
+                }
+                
+                string animateTagString = styleChunk.openTagString.Substring(animateTagStartIndex, animateTagEndIndex - animateTagStartIndex + 1);
+                styleChunk.usesAnimations = true;
+                styleChunk.animationTags = animateTagString;
+
+
+            } else {
+                styleChunk.usesAnimations = false;
+            }
+            
+            styleChunk.styledTextStartIndex = regexMatches[i].Index - styleChunk.openTagString.Length + 1 - indexOffset; //Uses offset to compensate for when animate tags are removed
+           
+            //Remove open and close tags from our clean dialogue
             cleanDialogue = cleanDialogue.Replace(styleChunk.openTagString, "");
             cleanDialogue = cleanDialogue.Replace(styleChunk.closeTagString, "");
 
+            //If we used animations in this chunk, then we need to remove them from the open/close tags manually
+            if (styleChunk.usesAnimations) {
+                styleChunk.openTagString = styleChunk.openTagString.Replace(styleChunk.animationTags, "");
+                styleChunk.closeTagString = styleChunk.closeTagString.Replace("</animate>", "");
+
+                styleChunk.animationStartIndex = styleChunk.styledTextStartIndex;
+                styleChunk.animationEndIndex = styleChunk.styledTextStartIndex + styleChunk.GetLength();
+            }
             
+            //Reset our offset if needed
+            indexOffset = styleChunk.usesAnimations ? indexOffset + (styleChunk.animationTags.Length + "</animate>".Length) : indexOffset;
             
             styleTextChunks.Add(styleChunk);
         }
-        
 
+        if (textAnimations != null) {
+            foreach (StyleTextChunk chunk in styleTextChunks.Where(txt => txt.usesAnimations)) {
+                textAnimations.AddAnimationInfo(new TextAnimationInfo(chunk.animationStartIndex, chunk.animationEndIndex));
+            }
+        }
 
         int workingIndex = 0;
         string displayText = "";
@@ -207,17 +251,30 @@ public class Textbox : MonoBehaviour
         public int styledTextStartIndex;
         public string styledText;
 
+        public bool usesAnimations;
+        public int animationStartIndex;
+        public int animationEndIndex;
+        public string animationTags;
+
+        public int GetLength() {
+            return openTagString.Length + styledText.Length + closeTagString.Length;
+        }
+        
         public void PrintInfo() {
             Debug.Log("New Style Chunk: \n" +
-                      "Index: " + styledTextStartIndex + "\n" +
+                      "Index: " +
+                      styledTextStartIndex +
+                      "\n" +
                       "String: " +
                       styledText +
-                      "\n" +
-                      "Open Tag: " +
-                      openTagString +
-                      "\n" +
-                      "Close Tag: " +
-                      closeTagString);
+                      "\n"+
+                      "Uses Animations" + usesAnimations + "\n"
+                      + "Animation Tags: " + animationTags);
+            // "Open Tag: " +
+            // openTagString +
+            // "\n" +
+            // "Close Tag: " +
+            // closeTagString);
         }
     }
 

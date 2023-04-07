@@ -21,14 +21,12 @@ using Vector3 = UnityEngine.Vector3;
 public class TextAnimations : MonoBehaviour
 {
     //Mesh References
-    private TMP_Text textMesh;
+
+    [Header("Settings")]
+    [SerializeField] private TMP_Text textMesh;
     private Mesh mesh;
     private Vector3[] vertices;
     private Color[] colors;
-
-    [Header("Settings")]
-    [SerializeField] private int startAnimIndex;
-    [SerializeField] private int endAnimIndex;
 
     [Header("Wave")]
     [SerializeField] private bool useBounceEffect;
@@ -59,26 +57,111 @@ public class TextAnimations : MonoBehaviour
     [SerializeField] private float rotateAngle;
     [SerializeField] private float rotateFrequency;
     [SerializeField] private Vector3 rotationAxis;
+
+    private List<TextAnimationInfo> animationInfos = new List<TextAnimationInfo>();
     
-    private void Start() {
-        textMesh = GetComponent<TMP_Text>();
+
+    // private void AnimateMesh() {
+    //     textMesh.ForceMeshUpdate();
+    //     mesh = textMesh.mesh;
+    //     vertices = mesh.vertices;
+    //     colors = mesh.colors;
+    //
+    //     for (int i = 0; i < textMesh.textInfo.characterCount; i++) {
+    //         
+    //         TMP_CharacterInfo character = textMesh.textInfo.characterInfo[i];
+    //
+    //         if (character.isVisible) {
+    //             int startIndex = character.vertexIndex;
+    //             //Scale Effect
+    //             if (useScaleEffect) {
+    //                 float halfRange = (scaleMax - scaleMin) / 2;
+    //                 float scaleAmount = scaleMin + halfRange + Mathf.Sin(Time.time * scaleRate) * halfRange;
+    //                 Vector3 scaleVector = new Vector3(scaleAmount, scaleAmount, 0);
+    //
+    //                 vertices[startIndex].Scale(scaleVector);
+    //                 vertices[startIndex + 1].Scale(scaleVector);
+    //                 vertices[startIndex + 2].Scale(scaleVector);
+    //                 vertices[startIndex + 3].Scale(scaleVector);
+    //             }
+    //
+    //             //Bounce Effect
+    //             if (useBounceEffect) {
+    //                 Vector3 offset = new Vector3(0, Mathf.Sin((Time.time + i * bounceFrequency)) * bounceScale, 0);
+    //             
+    //                 vertices[startIndex] += offset;
+    //                 vertices[startIndex + 1] += offset;
+    //                 vertices[startIndex + 2] += offset;
+    //                 vertices[startIndex + 3] += offset;
+    //             }
+    //             
+    //             //Rainbow Effect
+    //             if (useRainbowEffect) {
+    //                 switch (rainbowDirection) {
+    //                     case RainbowDirection.Horizontal:
+    //                         colors[startIndex] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex].x * rainbowWidth, 1f));
+    //                         colors[startIndex + 1] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 1].x * rainbowWidth, 1f));
+    //                         colors[startIndex + 2] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 2].x * rainbowWidth, 1f));
+    //                         colors[startIndex + 3] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 3].x * rainbowWidth, 1f));
+    //                         break;
+    //                     case RainbowDirection.Vertical:
+    //                         colors[startIndex] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex].y * rainbowWidth, 1f));
+    //                         colors[startIndex + 1] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 1].y * rainbowWidth, 1f));
+    //                         colors[startIndex + 2] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 2].y * rainbowWidth, 1f));
+    //                         colors[startIndex + 3] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 3].y * rainbowWidth, 1f));
+    //                         break;
+    //                 }
+    //             }
+    //
+    //             //Rotation Effect
+    //             if (useRotateEffect) {
+    //                 Vector3 center = vertices[startIndex];
+    //                 Quaternion newRotation = new Quaternion();
+    //                 var pivotAmount = pingPongRotation ? Mathf.Sin(Time.time + i * rotateFrequency) * rotateAngle : (Time.time + i * rotateFrequency) * rotateAngle;
+    //                 newRotation.eulerAngles = rotationAxis * pivotAmount;
+    //                 
+    //                 vertices[startIndex] = newRotation * (vertices[startIndex] - center) + center;
+    //                 vertices[startIndex + 1] = newRotation * (vertices[startIndex + 1] - center) + center;
+    //                 vertices[startIndex + 2] = newRotation * (vertices[startIndex + 2] - center) + center;
+    //                 vertices[startIndex + 3] = newRotation * (vertices[startIndex + 3] - center) + center;
+    //                 
+    //             }
+    //         }
+    //         
+    //         
+    //     }
+    //
+    //     mesh.vertices = vertices;
+    //     mesh.colors = colors;
+    //     textMesh.canvasRenderer.SetMesh(mesh);
+    // }
+
+    public void AddAnimationInfo(TextAnimationInfo animationInfo) {
+        animationInfos.Add(animationInfo);
     }
 
     private void Update() {
-        AnimateMesh();
+        foreach (TextAnimationInfo info in animationInfos) {
+            AnimateMesh(info);            
+        }
     }
 
-    private void AnimateMesh() {
+    public void AnimateMesh(TextAnimationInfo animationInfo) {
         textMesh.ForceMeshUpdate();
         mesh = textMesh.mesh;
         vertices = mesh.vertices;
         colors = mesh.colors;
 
-        for (int i = 0; i < textMesh.textInfo.characterCount; i++) {
-            
+        int endIndex = textMesh.textInfo.characterInfo.Length >= animationInfo.animEndIndex ? animationInfo.animEndIndex : textMesh.textInfo.characterInfo.Length;
+        
+        // Debug.Log("Start: " + animationInfo.animStartIndex + " End: " + animationInfo.animEndIndex);
+        // Debug.Log(endIndex);
+        
+        for (int i = animationInfo.animStartIndex; i < textMesh.textInfo.characterInfo.Length; i++) {
+            // Debug.Log(i);
             TMP_CharacterInfo character = textMesh.textInfo.characterInfo[i];
 
-            if (character.isVisible && (i >= startAnimIndex && i <= endAnimIndex)) {
+            if (character.isVisible && (i >= animationInfo.animStartIndex && i <= animationInfo.animEndIndex)) {
                 int startIndex = character.vertexIndex;
                 //Scale Effect
                 if (useScaleEffect) {
@@ -141,5 +224,17 @@ public class TextAnimations : MonoBehaviour
         mesh.vertices = vertices;
         mesh.colors = colors;
         textMesh.canvasRenderer.SetMesh(mesh);
+    }
+}
+
+public class TextAnimationInfo
+{
+    public int animStartIndex;
+    public int animEndIndex;
+
+
+    public TextAnimationInfo(int startIndex, int endIndex) {
+        animStartIndex = startIndex;
+        animEndIndex = endIndex;
     }
 }

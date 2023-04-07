@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &475379800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,8 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83f25c5c70019594aa1337ff05c9737a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startAnimIndex: 4
-  endAnimIndex: 10
+  textMesh: {fileID: 0}
   useBounceEffect: 0
   bounceScale: 10
   bounceFrequency: 10
@@ -597,12 +596,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9059049030029370658, guid: 2a7576eda578cdf428847899fc5fd4dc, type: 3}
       propertyPath: wpmReadingSpeed
-      value: 230
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 9059049030029370658, guid: 2a7576eda578cdf428847899fc5fd4dc, type: 3}
       propertyPath: dialogueBoxPrefab
       value: 
-      objectReference: {fileID: 6938210103049046939, guid: 9865445fdb09730479c3ed63b732bafb, type: 3}
+      objectReference: {fileID: 6938210103049046939, guid: 06a066884e769224ea511ffdade209a5, type: 3}
     - target: {fileID: 9059049030029370658, guid: 2a7576eda578cdf428847899fc5fd4dc, type: 3}
       propertyPath: onlyLerpFirstBoxInQue
       value: 1
@@ -697,7 +696,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9059049030029370663, guid: 2a7576eda578cdf428847899fc5fd4dc, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a7576eda578cdf428847899fc5fd4dc, type: 3}

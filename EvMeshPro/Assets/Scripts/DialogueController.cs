@@ -207,6 +207,10 @@ public class DialogueController : MonoBehaviour
                     taglessString = "<size=" + sizeValue + ">" + taglessString + "</size>";
                 }
 
+                if (textStyle.useTextAnimations) {
+                    taglessString = "<animate={rainbow}>" + taglessString + "</animate>";
+                }
+
                 
 
                 

@@ -29,6 +29,8 @@ MonoBehaviour:
     isUnderLine: 0
     isHighlighted: 0
     highLightColor: {r: 0.23161788, g: 0.8980392, b: 0.17254902, a: 1}
+    useTextAnimations: 1
+    useRainbowEffect: 1
   - tagID: NAMES
     overrideColor: 1
     textColor: {r: 0.1254902, g: 0.42596555, b: 0.9137255, a: 1}
@@ -44,6 +46,8 @@ MonoBehaviour:
     isUnderLine: 0
     isHighlighted: 0
     highLightColor: {r: 0.8980392, g: 0.6714969, b: 0.17254902, a: 1}
+    useTextAnimations: 0
+    useRainbowEffect: 0
   - tagID: EXAGGERATE
     overrideColor: 1
     textColor: {r: 0.9137255, g: 0.27777937, b: 0.1254902, a: 1}
@@ -59,3 +63,5 @@ MonoBehaviour:
     isUnderLine: 0
     isHighlighted: 0
     highLightColor: {r: 0.8980392, g: 0.6714969, b: 0.17254902, a: 1}
+    useTextAnimations: 0
+    useRainbowEffect: 0
