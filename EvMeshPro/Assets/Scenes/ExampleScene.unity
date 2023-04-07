@@ -596,7 +596,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9059049030029370658, guid: 2a7576eda578cdf428847899fc5fd4dc, type: 3}
       propertyPath: wpmReadingSpeed
-      value: 150
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 9059049030029370658, guid: 2a7576eda578cdf428847899fc5fd4dc, type: 3}
       propertyPath: dialogueBoxPrefab

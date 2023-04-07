@@ -208,7 +208,7 @@ public class DialogueController : MonoBehaviour
                 }
 
                 if (textStyle.useTextAnimations) {
-                    taglessString = "<animate={rainbow}>" + taglessString + "</animate>";
+                    taglessString = "<animate={rainbow=1,10,2,0}{bounce=1,0,8,10}>" + taglessString + "</animate>";
                 }
 
                 

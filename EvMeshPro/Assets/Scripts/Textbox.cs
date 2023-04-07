@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using TMPro;
+using TMPro.EditorUtilities;
 
 using Unity.VisualScripting;
 
@@ -165,8 +166,19 @@ public class Textbox : MonoBehaviour
                 styleChunk.openTagString = styleChunk.openTagString.Replace(styleChunk.animationTags, "");
                 styleChunk.closeTagString = styleChunk.closeTagString.Replace("</animate>", "");
 
-                styleChunk.animationStartIndex = styleChunk.styledTextStartIndex;
-                styleChunk.animationEndIndex = styleChunk.styledTextStartIndex + styleChunk.GetLength();
+                if (i > 0) {
+                    int removeAmount = 0;
+                    for (int x = i; x > 0; x--) {
+                        removeAmount += styleTextChunks[x - 1].GetLength() - styleTextChunks[x - 1].styledText.Length;
+                    }
+                    styleChunk.animationStartIndex = styleChunk.styledTextStartIndex - removeAmount;
+                    styleChunk.animationEndIndex = styleChunk.animationStartIndex + styleChunk.styledText.Length;
+                } else {
+                    styleChunk.animationStartIndex = styleChunk.styledTextStartIndex;
+                    styleChunk.animationEndIndex = styleChunk.animationStartIndex + styleChunk.styledText.Length;
+                }
+                
+                
             }
             
             //Reset our offset if needed

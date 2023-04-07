@@ -141,85 +141,83 @@ public class TextAnimations : MonoBehaviour
     }
 
     private void Update() {
-        foreach (TextAnimationInfo info in animationInfos) {
-            AnimateMesh(info);            
-        }
+        AnimateMesh();
     }
 
-    public void AnimateMesh(TextAnimationInfo animationInfo) {
+    public void AnimateMesh() {
         textMesh.ForceMeshUpdate();
         mesh = textMesh.mesh;
         vertices = mesh.vertices;
         colors = mesh.colors;
-
-        int endIndex = textMesh.textInfo.characterInfo.Length >= animationInfo.animEndIndex ? animationInfo.animEndIndex : textMesh.textInfo.characterInfo.Length;
         
-        // Debug.Log("Start: " + animationInfo.animStartIndex + " End: " + animationInfo.animEndIndex);
-        // Debug.Log(endIndex);
-        
-        for (int i = animationInfo.animStartIndex; i < textMesh.textInfo.characterInfo.Length; i++) {
-            // Debug.Log(i);
-            TMP_CharacterInfo character = textMesh.textInfo.characterInfo[i];
 
-            if (character.isVisible && (i >= animationInfo.animStartIndex && i <= animationInfo.animEndIndex)) {
-                int startIndex = character.vertexIndex;
-                //Scale Effect
-                if (useScaleEffect) {
-                    float halfRange = (scaleMax - scaleMin) / 2;
-                    float scaleAmount = scaleMin + halfRange + Mathf.Sin(Time.time * scaleRate) * halfRange;
-                    Vector3 scaleVector = new Vector3(scaleAmount, scaleAmount, 0);
+        foreach (TextAnimationInfo animationInfo in animationInfos) {
+            
+            for (int i = animationInfo.animStartIndex; i < textMesh.textInfo.characterInfo.Length; i++) {
+                // Debug.Log(i);
+                TMP_CharacterInfo character = textMesh.textInfo.characterInfo[i];
 
-                    vertices[startIndex].Scale(scaleVector);
-                    vertices[startIndex + 1].Scale(scaleVector);
-                    vertices[startIndex + 2].Scale(scaleVector);
-                    vertices[startIndex + 3].Scale(scaleVector);
-                }
+                if (character.isVisible && (i >= animationInfo.animStartIndex && i <= animationInfo.animEndIndex)) {
+                    int startIndex = character.vertexIndex;
+                    //Scale Effect
+                    if (useScaleEffect) {
+                        float halfRange = (scaleMax - scaleMin) / 2;
+                        float scaleAmount = scaleMin + halfRange + Mathf.Sin(Time.time * scaleRate) * halfRange;
+                        Vector3 scaleVector = new Vector3(scaleAmount, scaleAmount, 0);
 
-                //Bounce Effect
-                if (useBounceEffect) {
-                    Vector3 offset = new Vector3(0, Mathf.Sin((Time.time + i * bounceFrequency)) * bounceScale, 0);
-                
-                    vertices[startIndex] += offset;
-                    vertices[startIndex + 1] += offset;
-                    vertices[startIndex + 2] += offset;
-                    vertices[startIndex + 3] += offset;
-                }
-                
-                //Rainbow Effect
-                if (useRainbowEffect) {
-                    switch (rainbowDirection) {
-                        case RainbowDirection.Horizontal:
-                            colors[startIndex] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex].x * rainbowWidth, 1f));
-                            colors[startIndex + 1] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 1].x * rainbowWidth, 1f));
-                            colors[startIndex + 2] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 2].x * rainbowWidth, 1f));
-                            colors[startIndex + 3] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 3].x * rainbowWidth, 1f));
-                            break;
-                        case RainbowDirection.Vertical:
-                            colors[startIndex] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex].y * rainbowWidth, 1f));
-                            colors[startIndex + 1] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 1].y * rainbowWidth, 1f));
-                            colors[startIndex + 2] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 2].y * rainbowWidth, 1f));
-                            colors[startIndex + 3] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 3].y * rainbowWidth, 1f));
-                            break;
+                        vertices[startIndex].Scale(scaleVector);
+                        vertices[startIndex + 1].Scale(scaleVector);
+                        vertices[startIndex + 2].Scale(scaleVector);
+                        vertices[startIndex + 3].Scale(scaleVector);
+                    }
+
+                    //Bounce Effect
+                    if (useBounceEffect) {
+                        Vector3 offset = new Vector3(0, Mathf.Sin((Time.time + i * bounceFrequency)) * bounceScale, 0);
+                    
+                        vertices[startIndex] += offset;
+                        vertices[startIndex + 1] += offset;
+                        vertices[startIndex + 2] += offset;
+                        vertices[startIndex + 3] += offset;
+                    }
+                    
+                    //Rainbow Effect
+                    if (useRainbowEffect) {
+                        switch (rainbowDirection) {
+                            case RainbowDirection.Horizontal:
+                                colors[startIndex] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex].x * rainbowWidth, 1f));
+                                colors[startIndex + 1] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 1].x * rainbowWidth, 1f));
+                                colors[startIndex + 2] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 2].x * rainbowWidth, 1f));
+                                colors[startIndex + 3] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 3].x * rainbowWidth, 1f));
+                                break;
+                            case RainbowDirection.Vertical:
+                                colors[startIndex] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex].y * rainbowWidth, 1f));
+                                colors[startIndex + 1] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 1].y * rainbowWidth, 1f));
+                                colors[startIndex + 2] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 2].y * rainbowWidth, 1f));
+                                colors[startIndex + 3] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 3].y * rainbowWidth, 1f));
+                                break;
+                        }
+                    }
+
+                    //Rotation Effect
+                    if (useRotateEffect) {
+                        Vector3 center = vertices[startIndex];
+                        Quaternion newRotation = new Quaternion();
+                        var pivotAmount = pingPongRotation ? Mathf.Sin(Time.time + i * rotateFrequency) * rotateAngle : (Time.time + i * rotateFrequency) * rotateAngle;
+                        newRotation.eulerAngles = rotationAxis * pivotAmount;
+                        
+                        vertices[startIndex] = newRotation * (vertices[startIndex] - center) + center;
+                        vertices[startIndex + 1] = newRotation * (vertices[startIndex + 1] - center) + center;
+                        vertices[startIndex + 2] = newRotation * (vertices[startIndex + 2] - center) + center;
+                        vertices[startIndex + 3] = newRotation * (vertices[startIndex + 3] - center) + center;
+                        
                     }
                 }
 
-                //Rotation Effect
-                if (useRotateEffect) {
-                    Vector3 center = vertices[startIndex];
-                    Quaternion newRotation = new Quaternion();
-                    var pivotAmount = pingPongRotation ? Mathf.Sin(Time.time + i * rotateFrequency) * rotateAngle : (Time.time + i * rotateFrequency) * rotateAngle;
-                    newRotation.eulerAngles = rotationAxis * pivotAmount;
-                    
-                    vertices[startIndex] = newRotation * (vertices[startIndex] - center) + center;
-                    vertices[startIndex + 1] = newRotation * (vertices[startIndex + 1] - center) + center;
-                    vertices[startIndex + 2] = newRotation * (vertices[startIndex + 2] - center) + center;
-                    vertices[startIndex + 3] = newRotation * (vertices[startIndex + 3] - center) + center;
-                    
-                }
             }
-            
-            
         }
+        
+        
 
         mesh.vertices = vertices;
         mesh.colors = colors;

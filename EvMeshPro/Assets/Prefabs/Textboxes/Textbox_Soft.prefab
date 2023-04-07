@@ -668,9 +668,9 @@ MonoBehaviour:
   bounceScale: 2
   bounceFrequency: 10
   useScaleEffect: 0
-  scaleRate: 0
-  scaleMax: 0
-  scaleMin: 0
+  scaleRate: 2
+  scaleMax: 1.5
+  scaleMin: 1
   useRainbowEffect: 1
   rainbowWidth: 0.001
   rainbowDirection: 0
@@ -703,11 +703,11 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
-  useRotateEffect: 0
+  useRotateEffect: 1
   pingPongRotation: 0
-  rotateAngle: 0
-  rotateFrequency: 0
-  rotationAxis: {x: 0, y: 0, z: 0}
+  rotateAngle: 60
+  rotateFrequency: 1
+  rotationAxis: {x: 0, y: 1, z: 0}
 --- !u!1 &6938210103144323934
 GameObject:
   m_ObjectHideFlags: 0
