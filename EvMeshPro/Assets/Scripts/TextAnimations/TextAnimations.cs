@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 using TMPro;
 
+using UnityEditor;
 using UnityEditor.Build;
 
 using UnityEngine;
@@ -24,6 +25,10 @@ public class TextAnimations : MonoBehaviour
     private Mesh mesh;
     private Vector3[] vertices;
     private Color[] colors;
+
+    [Header("Settings")]
+    [SerializeField] private int startAnimIndex;
+    [SerializeField] private int endAnimIndex;
 
     [Header("Wave")]
     [SerializeField] private bool useBounceEffect;
@@ -50,8 +55,10 @@ public class TextAnimations : MonoBehaviour
     
     [Header("Rotate")]
     [SerializeField] private bool useRotateEffect;
-    [SerializeField] private float rotationAngle;
-    [SerializeField] private float rotationFrequency;
+    [SerializeField] private bool pingPongRotation;
+    [SerializeField] private float rotateAngle;
+    [SerializeField] private float rotateFrequency;
+    [SerializeField] private Vector3 rotationAxis;
     
     private void Start() {
         textMesh = GetComponent<TMP_Text>();
@@ -71,7 +78,7 @@ public class TextAnimations : MonoBehaviour
             
             TMP_CharacterInfo character = textMesh.textInfo.characterInfo[i];
 
-            if (character.isVisible) {
+            if (character.isVisible && (i >= startAnimIndex && i <= endAnimIndex)) {
                 int startIndex = character.vertexIndex;
                 //Scale Effect
                 if (useScaleEffect) {
@@ -113,10 +120,12 @@ public class TextAnimations : MonoBehaviour
                     }
                 }
 
+                //Rotation Effect
                 if (useRotateEffect) {
                     Vector3 center = vertices[startIndex];
                     Quaternion newRotation = new Quaternion();
-                    newRotation.eulerAngles = new Vector3(0,0,Mathf.Sin(Time.time + i * rotationFrequency) * rotationAngle);
+                    var pivotAmount = pingPongRotation ? Mathf.Sin(Time.time + i * rotateFrequency) * rotateAngle : (Time.time + i * rotateFrequency) * rotateAngle;
+                    newRotation.eulerAngles = rotationAxis * pivotAmount;
                     
                     vertices[startIndex] = newRotation * (vertices[startIndex] - center) + center;
                     vertices[startIndex + 1] = newRotation * (vertices[startIndex + 1] - center) + center;
