@@ -50,6 +50,6 @@ public class CustomTextStyle
 	public bool isHighlighted = false;
 	public Color highLightColor;
 	[Space]
-	public bool useTextAnimations;
-	public bool useRainbowEffect;
+	public bool useTextAnimation = false;
+	public TextAnimationInfo textAnimationSettings;
 }

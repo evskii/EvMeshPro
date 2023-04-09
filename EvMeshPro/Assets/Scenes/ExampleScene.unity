@@ -592,7 +592,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 9059049030029370658, guid: 2a7576eda578cdf428847899fc5fd4dc, type: 3}
       propertyPath: textTypeSpeed
-      value: 0.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9059049030029370658, guid: 2a7576eda578cdf428847899fc5fd4dc, type: 3}
       propertyPath: wpmReadingSpeed

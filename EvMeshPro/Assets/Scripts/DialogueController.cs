@@ -207,10 +207,13 @@ public class DialogueController : MonoBehaviour
                     taglessString = "<size=" + sizeValue + ">" + taglessString + "</size>";
                 }
 
-                if (textStyle.useTextAnimations) {
-                    taglessString = "<animate={rainbow=1,10,2,0}{bounce=1,0,8,10}>" + taglessString + "</animate>";
+                if (textStyle.useTextAnimation) {
+                    // taglessString = "<animate={rainbow=1,10,2,0}{bounce=1,0,8,10}>" + taglessString + "</animate>";
+                    taglessString = "<animate=" + textStyle.textAnimationSettings.GetSettingsSeed() + ">" + taglessString + "</animate>";
+                    // Debug.Log(textStyle.textAnimationSettings.GetSettingsSeed());
                 }
-
+                
+                
                 
 
                 

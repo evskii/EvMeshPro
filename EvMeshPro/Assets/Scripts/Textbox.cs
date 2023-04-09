@@ -107,11 +107,7 @@ public class Textbox : MonoBehaviour
     public void DisplayText(float typeSpeed) {
         dialogueText.text = "";
 
-        if (typeSpeed == 0) {
-            dialogueText.text = dialogue;
-        } else {
-            StartCoroutine(OneLetterAtAtime(typeSpeed));
-        }
+        StartCoroutine(OneLetterAtAtime(typeSpeed));
         
     }
 
@@ -189,7 +185,9 @@ public class Textbox : MonoBehaviour
 
         if (textAnimations != null) {
             foreach (StyleTextChunk chunk in styleTextChunks.Where(txt => txt.usesAnimations)) {
-                textAnimations.AddAnimationInfo(new TextAnimationInfo(chunk.animationStartIndex, chunk.animationEndIndex));
+                // Debug.Log(chunk.animationTags);
+                TextAnimationInfo animationSettings = new TextAnimationInfo(chunk.animationStartIndex, chunk.animationEndIndex, chunk.animationTags.Replace("<animate=", "").Replace(">", "")); 
+                textAnimations.AddAnimationInfo(animationSettings);
             }
         }
 
@@ -249,9 +247,11 @@ public class Textbox : MonoBehaviour
 
                 audioSource.Play();
             }
+
+            if (typeSpeed != 0) {
+                yield return new WaitForSeconds(typeSpeed);
+            }
             
-            
-            yield return new WaitForSeconds(typeSpeed);
         }
     }
     
