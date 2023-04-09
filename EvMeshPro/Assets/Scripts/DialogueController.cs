@@ -208,16 +208,11 @@ public class DialogueController : MonoBehaviour
                 }
 
                 if (textStyle.useTextAnimation) {
-                    // taglessString = "<animate={rainbow=1,10,2,0}{bounce=1,0,8,10}>" + taglessString + "</animate>";
                     taglessString = "<animate=" + textStyle.textAnimationSettings.GetSettingsSeed() + ">" + taglessString + "</animate>";
-                    // Debug.Log(textStyle.textAnimationSettings.GetSettingsSeed());
-                }
+                }      
                 
                 
                 
-
-                
-
                 rawString = rawString.Replace(taggedString, taglessString);
             }
             
@@ -225,6 +220,26 @@ public class DialogueController : MonoBehaviour
         } else {
             return rawString;
         }
+    }
+
+    public string ParseDialogueCustomStyle(string toParse, bool removeAnimationTags) {
+        string textToReturn = ParseDialogueCustomStyle(toParse);
+        if (removeAnimationTags && textToReturn.Contains("<animate")) {
+            var animStartIndex = textToReturn.IndexOf("<animate");
+            var animEndIndex = 0;
+            for (int i = 0; i < textToReturn.Length; i++) {
+                if (textToReturn[i] == '>') {
+                    animEndIndex = i+1;
+                    break;
+                }
+            }
+            textToReturn = textToReturn.Remove(animStartIndex, animEndIndex - animStartIndex);
+            textToReturn = textToReturn.Replace("</animate>", "");
+            return textToReturn;
+        } else {
+            return textToReturn;
+        }
+        
     }
 
 }

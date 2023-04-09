@@ -7,8 +7,8 @@ using UnityEngine;
 public class DEBUG_TestDialogue : MonoBehaviour
 {
 	private void Start() {
-		// Invoke("TestMulitBoxes", 2f);
-		TestMulitBoxes();
+		Invoke("TestMulitBoxes", 2f);
+		// TestMulitBoxes();
 	}
 
 	[ContextMenu("Test Multi Boxes")]
@@ -22,7 +22,8 @@ public class DEBUG_TestDialogue : MonoBehaviour
 		// DialogueController.instance.NewDialogueInstance("Good afternoon traveller. I require your services... There is a caravan of bandits making their way to our settlement, and I would" +
 		//                                                 " be forever in your debt if you could take care of them.");
 		
-		DialogueController.instance.NewDialogueInstance("xBot, [GREEN]reckon[/GREEN] you could [NAMES]make short[/NAMES] work of this encryption?");
+		// DialogueController.instance.NewDialogueInstance("xBot, [GREEN]reckon[/GREEN] you could [NAMES]make short[/NAMES] work of this encryption?");
+		DialogueController.instance.NewDialogueInstance("Oh hot damn, those are some [GREEN]FUNKY[/GREEN] text animations. [NAMES]This shit's kinda nice[/NAMES]... Custom text styles now feature animated text options!");
 		
 		// DialogueController.instance.NewDialogueInstance("Hey! How are you doing? You look good!"); 
 		

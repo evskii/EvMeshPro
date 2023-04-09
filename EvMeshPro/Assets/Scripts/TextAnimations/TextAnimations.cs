@@ -5,6 +5,8 @@ using TMPro;
 
 using Unity.VisualScripting;
 
+using UnityEditor;
+
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,102 +14,32 @@ using ColorUtility = UnityEngine.ColorUtility;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-
 public class TextAnimations : MonoBehaviour
 {
     //Mesh References
 
     [Header("Settings")]
     [SerializeField] private TMP_Text textMesh;
+    [SerializeField][Tooltip("These settings will be used to animate all text in your referenced text component if no other settings have been specified through code.")] 
+    private TextAnimationInfo defaultAnimationSettings;
+    
     private Mesh mesh;
     private Vector3[] vertices;
     private Color[] colors;
 
-   
+    private List<TextAnimationInfo> animationSettings = new List<TextAnimationInfo>(); //List that stores animation settings for particular characters
 
-    private List<TextAnimationInfo> animationSettings = new List<TextAnimationInfo>();
-    
-
-    // private void AnimateMesh() {
-    //     textMesh.ForceMeshUpdate();
-    //     mesh = textMesh.mesh;
-    //     vertices = mesh.vertices;
-    //     colors = mesh.colors;
-    //
-    //     for (int i = 0; i < textMesh.textInfo.characterCount; i++) {
-    //         
-    //         TMP_CharacterInfo character = textMesh.textInfo.characterInfo[i];
-    //
-    //         if (character.isVisible) {
-    //             int startIndex = character.vertexIndex;
-    //             //Scale Effect
-    //             if (useScaleEffect) {
-    //                 float halfRange = (scaleMax - scaleMin) / 2;
-    //                 float scaleAmount = scaleMin + halfRange + Mathf.Sin(Time.time * scaleRate) * halfRange;
-    //                 Vector3 scaleVector = new Vector3(scaleAmount, scaleAmount, 0);
-    //
-    //                 vertices[startIndex].Scale(scaleVector);
-    //                 vertices[startIndex + 1].Scale(scaleVector);
-    //                 vertices[startIndex + 2].Scale(scaleVector);
-    //                 vertices[startIndex + 3].Scale(scaleVector);
-    //             }
-    //
-    //             //Bounce Effect
-    //             if (useBounceEffect) {
-    //                 Vector3 offset = new Vector3(0, Mathf.Sin((Time.time + i * bounceFrequency)) * bounceScale, 0);
-    //             
-    //                 vertices[startIndex] += offset;
-    //                 vertices[startIndex + 1] += offset;
-    //                 vertices[startIndex + 2] += offset;
-    //                 vertices[startIndex + 3] += offset;
-    //             }
-    //             
-    //             //Rainbow Effect
-    //             if (useRainbowEffect) {
-    //                 switch (rainbowDirection) {
-    //                     case RainbowDirection.Horizontal:
-    //                         colors[startIndex] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex].x * rainbowWidth, 1f));
-    //                         colors[startIndex + 1] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 1].x * rainbowWidth, 1f));
-    //                         colors[startIndex + 2] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 2].x * rainbowWidth, 1f));
-    //                         colors[startIndex + 3] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 3].x * rainbowWidth, 1f));
-    //                         break;
-    //                     case RainbowDirection.Vertical:
-    //                         colors[startIndex] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex].y * rainbowWidth, 1f));
-    //                         colors[startIndex + 1] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 1].y * rainbowWidth, 1f));
-    //                         colors[startIndex + 2] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 2].y * rainbowWidth, 1f));
-    //                         colors[startIndex + 3] = rainbow.Evaluate(Mathf.Repeat(Time.time + vertices[startIndex + 3].y * rainbowWidth, 1f));
-    //                         break;
-    //                 }
-    //             }
-    //
-    //             //Rotation Effect
-    //             if (useRotateEffect) {
-    //                 Vector3 center = vertices[startIndex];
-    //                 Quaternion newRotation = new Quaternion();
-    //                 var pivotAmount = pingPongRotation ? Mathf.Sin(Time.time + i * rotateFrequency) * rotateAngle : (Time.time + i * rotateFrequency) * rotateAngle;
-    //                 newRotation.eulerAngles = rotationAxis * pivotAmount;
-    //                 
-    //                 vertices[startIndex] = newRotation * (vertices[startIndex] - center) + center;
-    //                 vertices[startIndex + 1] = newRotation * (vertices[startIndex + 1] - center) + center;
-    //                 vertices[startIndex + 2] = newRotation * (vertices[startIndex + 2] - center) + center;
-    //                 vertices[startIndex + 3] = newRotation * (vertices[startIndex + 3] - center) + center;
-    //                 
-    //             }
-    //         }
-    //         
-    //         
-    //     }
-    //
-    //     mesh.vertices = vertices;
-    //     mesh.colors = colors;
-    //     textMesh.canvasRenderer.SetMesh(mesh);
-    // }
-
+    //Called to add animation settings to the list for execution
     public void AddAnimationInfo(TextAnimationInfo animationInfo) {
         animationSettings.Add(animationInfo);
     }
 
     private void Update() {
+        if (animationSettings.Count == 0) {
+            defaultAnimationSettings.animStartIndex = 0;
+            defaultAnimationSettings.animEndIndex = textMesh.text.Length;
+            animationSettings.Add(defaultAnimationSettings);
+        }
         AnimateMesh();
     }
 
@@ -132,15 +64,21 @@ public class TextAnimations : MonoBehaviour
                         float scaleAmount = animationSettings.scaleMin + halfRange + Mathf.Sin(Time.time * animationSettings.scaleRate) * halfRange;
                         Vector3 scaleVector = new Vector3(scaleAmount, scaleAmount, 1);
 
-                        vertices[startIndex].Scale(scaleVector);
-                        vertices[startIndex + 1].Scale(scaleVector);
-                        vertices[startIndex + 2].Scale(scaleVector);
-                        vertices[startIndex + 3].Scale(scaleVector);
+                        // vertices[startIndex].Scale(scaleVector);
+                        // vertices[startIndex + 1].Scale(scaleVector);
+                        // vertices[startIndex + 2].Scale(scaleVector);
+                        // vertices[startIndex + 3].Scale(scaleVector);
+
+                        vertices[startIndex] += new Vector3(-scaleAmount, -scaleAmount, 0);
+                        vertices[startIndex + 1] += new Vector3(-scaleAmount, scaleAmount, 0);
+                        vertices[startIndex + 2] += new Vector3(scaleAmount, scaleAmount, 0);
+                        vertices[startIndex + 3] += new Vector3(scaleAmount, -scaleAmount, 0);
+
                     }
 
                     //Bounce Effect
                     if (animationSettings.useBounceEffect) {
-                        Vector3 offset = new Vector3(0, Mathf.Sin((Time.time + i * animationSettings.bounceFrequency)) * animationSettings.bounceScale, 0);
+                        Vector3 offset = new Vector3(0, Mathf.Sin(((Time.time + i) * animationSettings.bounceFrequency)) * animationSettings.bounceScale, 0);
                     
                         vertices[startIndex] += offset;
                         vertices[startIndex + 1] += offset;
@@ -168,7 +106,11 @@ public class TextAnimations : MonoBehaviour
 
                     //Rotation Effect
                     if (animationSettings.useRotateEffect) {
-                        Vector3 center = vertices[startIndex];
+                        // Vector3 center = vertices[startIndex];
+                        float centerX = (vertices[startIndex].x + vertices[startIndex + 2].x) / 2;
+                        float centerY = (vertices[startIndex].y + vertices[startIndex + 2].y) / 2;
+                        Vector3 center = new Vector3(centerX, centerY, 0);
+                        
                         Quaternion newRotation = new Quaternion();
                         var pivotAmount = animationSettings.pingPongRotation ? Mathf.Sin(Time.time + i * animationSettings.rotateFrequency) * animationSettings.rotateAngle : (Time.time + i * animationSettings.rotateFrequency) * animationSettings.rotateAngle;
                         newRotation.eulerAngles = animationSettings.rotationAxis * pivotAmount;

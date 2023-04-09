@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewTextStyleList", menuName = "EvMeshPro/New Text Style List", order = 2)]
 public class SO_TextStyleList : ScriptableObject
 {
-	[TextArea]public string previewSampleText = "This is the sample text used when you are testing our your custom style in scene view!";
+	// [TextArea]public string previewSampleText = "This is the sample text used when you are testing our your custom style in scene view!";
 
 	public List<CustomTextStyle> customTextStyles = new List<CustomTextStyle>();
 	

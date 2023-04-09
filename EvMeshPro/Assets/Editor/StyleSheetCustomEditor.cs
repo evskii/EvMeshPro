@@ -10,9 +10,12 @@ public class StyleSheetCustomEditor : Editor
    //Custom Editor script for previewing changes to custom style tags
    private GameObject previewGameObject; //References the currently instantiated preview canvas
    private int selected = 0; //Keeps track of the selected ID index
+   private string previewText = "Custom text style preview text...";
    
    public override void OnInspectorGUI() {
       SO_TextStyleList previewList = (SO_TextStyleList)target;
+      
+      GUILayout.Box("Use the dropdown below to select what custom text style you wish to preview, then hit the \"Preview In Scene\" button.");
       
       //Create a popup of ID's on the current custom style list
       List<string> popupOptions = new List<string>();
@@ -20,12 +23,16 @@ public class StyleSheetCustomEditor : Editor
          popupOptions.Add(style.tagID);
       }
       string[] options = popupOptions.ToArray();
-      selected = EditorGUILayout.Popup("Label", selected, options); 
+      selected = EditorGUILayout.Popup("Text Style To Test:", selected, options); 
       
       
       if (GUILayout.Button("Preview In Scene")) {
         PreviewInScene(options[selected]);
       }
+
+      previewText = GUILayout.TextField(previewText, 50);
+      
+      GUILayout.Space(10f);
       
       base.OnInspectorGUI();
    }
@@ -48,12 +55,12 @@ public class StyleSheetCustomEditor : Editor
       TMP_Text textAsset = previewGameObject.GetComponentInChildren<TMP_Text>();
 
       //Create the preview text and add our ID tags to both ends
-      string textToPreview = "[" + id + "]" + previewList.previewSampleText + "[/" + id + "]";
+      string textToPreview = "[" + id + "]" + previewText + "[/" + id + "]";
 
       //Create a dialogue controller on our preview canvas and use that to generate our rich text string
       DialogueController previewDialogueController = previewGameObject.AddComponent<DialogueController>();
       previewDialogueController.textStyleList = previewList;
-      string parsedText = previewDialogueController.ParseDialogueCustomStyle(textToPreview);
+      string parsedText = previewDialogueController.ParseDialogueCustomStyle(textToPreview, true);
 
       //Assign our new rich text to the text asset on our preview canvas
       textAsset.text = parsedText;

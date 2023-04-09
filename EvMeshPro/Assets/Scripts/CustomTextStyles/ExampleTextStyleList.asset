@@ -28,19 +28,19 @@ MonoBehaviour:
     isStrikeThrough: 0
     isUnderLine: 0
     isHighlighted: 0
-    highLightColor: {r: 0.23161788, g: 0.8980392, b: 0.17254902, a: 1}
+    highLightColor: {r: 0.8980392, g: 0.17254902, b: 0.35134017, a: 1}
     useTextAnimation: 1
     textAnimationSettings:
       animStartIndex: 0
       animEndIndex: 0
-      useBounceEffect: 1
-      bounceScale: 2
-      bounceFrequency: 10
+      useBounceEffect: 0
+      bounceScale: 3
+      bounceFrequency: 6
       useScaleEffect: 0
-      scaleRate: 4
-      scaleMax: 2
-      scaleMin: 8.01
-      useRainbowEffect: 1
+      scaleRate: 2.5
+      scaleMax: 4
+      scaleMin: 1
+      useRainbowEffect: 0
       rainbowWidth: 0.001
       rainbowDirection: 0
       rainbow:
@@ -75,7 +75,7 @@ MonoBehaviour:
       useRotateEffect: 1
       pingPongRotation: 0
       rotateAngle: 90
-      rotateFrequency: 2
+      rotateFrequency: 10
       rotationAxis: {x: 0, y: 1, z: 0}
   - tagID: NAMES
     overrideColor: 1
@@ -92,35 +92,35 @@ MonoBehaviour:
     isUnderLine: 0
     isHighlighted: 0
     highLightColor: {r: 0.8980392, g: 0.6714969, b: 0.17254902, a: 1}
-    useTextAnimation: 0
+    useTextAnimation: 1
     textAnimationSettings:
       animStartIndex: 0
       animEndIndex: 0
-      useBounceEffect: 0
-      bounceScale: 0
-      bounceFrequency: 0
+      useBounceEffect: 1
+      bounceScale: 4
+      bounceFrequency: 5
       useScaleEffect: 0
       scaleRate: 0
       scaleMax: 0
       scaleMin: 0
-      useRainbowEffect: 0
-      rainbowWidth: 0
+      useRainbowEffect: 1
+      rainbowWidth: 0.00424
       rainbowDirection: 0
       rainbow:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0, b: 0, a: 0}
-        key3: {r: 0, g: 0, b: 0, a: 0}
-        key4: {r: 0, g: 0, b: 0, a: 0}
+        key0: {r: 0.47388253, g: 0.990566, b: 0.042052314, a: 1}
+        key1: {r: 0, g: 0, b: 0, a: 1}
+        key2: {r: 0.016776435, g: 0.122641504, b: 0.081125796, a: 0}
+        key3: {r: 0, g: 0.6684909, b: 1, a: 0}
+        key4: {r: 1, g: 0.1273585, b: 0.8949136, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 65535
-        ctime2: 0
-        ctime3: 0
-        ctime4: 0
+        ctime1: 18697
+        ctime2: 25636
+        ctime3: 43754
+        ctime4: 65535
         ctime5: 0
         ctime6: 0
         ctime7: 0
@@ -133,13 +133,13 @@ MonoBehaviour:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 2
+        m_NumColorKeys: 5
         m_NumAlphaKeys: 2
-      useRotateEffect: 0
+      useRotateEffect: 1
       pingPongRotation: 0
       rotateAngle: 0
-      rotateFrequency: 0
-      rotationAxis: {x: 0, y: 0, z: 0}
+      rotateFrequency: 2
+      rotationAxis: {x: 0, y: 0, z: 1}
   - tagID: EXAGGERATE
     overrideColor: 1
     textColor: {r: 0.9137255, g: 0.27777937, b: 0.1254902, a: 1}
