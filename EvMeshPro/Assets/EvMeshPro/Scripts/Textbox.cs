@@ -3,15 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using TMPro;
-using TMPro.EditorUtilities;
-
-using Unity.VisualScripting;
-
 using UnityEngine;
 using UnityEngine.UI;
-
 using Random = UnityEngine.Random;
 
 public class Textbox : MonoBehaviour
@@ -242,7 +236,9 @@ public class Textbox : MonoBehaviour
                         audioSource.clip = defaultClips[Random.Range(0, defaultClips.Length)];
                     }
                 } else {
-                    audioSource.clip = defaultClips[Random.Range(0, defaultClips.Length)];
+                    if (defaultClips.Length > 0) {
+                        audioSource.clip = defaultClips[Random.Range(0, defaultClips.Length)];
+                    }
                 }
 
                 audioSource.Play();

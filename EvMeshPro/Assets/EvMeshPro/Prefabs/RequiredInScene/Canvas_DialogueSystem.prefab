@@ -117,13 +117,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueBoxPrefab: {fileID: 6938210103049046939, guid: 06a066884e769224ea511ffdade209a5, type: 3}
   dialogueBoxParent: {fileID: 9059049031638141783}
-  wpmReadingSpeed: 200
+  wpmReadingSpeed: 128
   textTypeSpeed: 0.01
   characterList: {fileID: 11400000, guid: e50a748e793113849ba3e50c33d8925b, type: 2}
   textStyleList: {fileID: 11400000, guid: 8adebc72f9f6a604dbfb0a8fc89f141b, type: 2}
   lerpDialogueBoxesIn: 1
-  onlyLerpFirstBoxInQue: 0
-  rawDialogue: []
+  onlyLerpFirstBoxInQue: 1
 --- !u!1 &9059049030932230545
 GameObject:
   m_ObjectHideFlags: 0

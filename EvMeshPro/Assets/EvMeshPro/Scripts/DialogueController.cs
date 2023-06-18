@@ -1,17 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Text.RegularExpressions;
-
-using Unity.VisualScripting;
-
-using UnityEditor.Profiling.Memory.Experimental;
-
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
-
 using ColorUtility = UnityEngine.ColorUtility;
 
 public class DialogueController : MonoBehaviour
