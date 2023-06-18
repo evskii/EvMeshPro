@@ -3,11 +3,11 @@ This is an easy to use dialogue system that extends upon the functionality of Te
 Itch.io page for this project: https://evskii.itch.io/evmeshpro
 
 ## Features:
-Easy to use dialogue boxes.
-Custom styles tag system.
-Highlight and customize individual words or whole sentences.
-Animate text inside of dialogue boxes.
-Create dynamic text boxes that allow character profiles to drive their visuals.
+- Easy to use dialogue boxes.
+- Custom styles tag system.
+- Highlight and customize individual words or whole sentences.
+- Animate text inside of dialogue boxes.
+- Create dynamic text boxes that allow character profiles to drive their visuals.
 
 
 This package is free to use (donations appreciated) for both personal and commercial projects. I would love to feature your projects on this page if you use this package, so let me know!
